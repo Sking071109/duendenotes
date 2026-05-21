@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DuendeNotes</title>
+    <meta name="description" content="DuendeNotes — tus notas guardadas del duende, con estilo pixel art." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ══ SCANLINES overlay (decorativo pixel art) ══════════ -->
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="app-shell">
+
+        <!-- ══ HEADER ══════════════════════════════════════════ -->
+        <header class="app-header">
+            <div class="header-left">
+                <img src="images/logo.webp" alt="Logo DuendeNotes" class="header-logo" id="headerLogo" />
+                <p class="app-tagline">// el duende guarda tus secretos</p>
+            </div>
+            <div class="header-right">
+                <div class="pixel-badge" id="statsBadge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span id="contadorNotas">0</span> notas
+                </div>
+                <button id="btnBorrarTodo" class="btn-pixel btn-danger-outline" type="button" title="Borrar todas las notas">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M9 6V4h6v2"/></svg>
+                    Purgar
+                </button>
+            </div>
+        </header>
+
+        <!-- ══ BARRA DE BÚSQUEDA ════════════════════════════════ -->
+        <div class="search-bar-wrap">
+            <div class="search-pixel">
+                <svg class="search-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input
+                    type="search"
+                    id="inputBuscar"
+                    class="input-pixel"
+                    placeholder="BUSCAR_NOTA..."
+                    autocomplete="off"
+                    aria-label="Buscar notas"
+                />
+            </div>
+        </div>
+
+        <!-- ══ MAIN: grid de notas ══════════════════════════════ -->
+        <main id="listaNotas" class="notas-grid" aria-live="polite" aria-label="Lista de notas"></main>
+
+        <!-- ══ BOTÓN FLOTANTE "+" ═══════════════════════════════ -->
+        <button id="btnNuevaNota" class="fab-pixel" type="button" aria-label="Crear nueva nota">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+
+    </div><!-- /app-shell -->
+
+    <!-- ══ MODAL: CREAR NOTA ════════════════════════════════════ -->
+    <div id="modalCrear" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalCrearTitulo" hidden>
+        <div class="modal-pixel-box">
+            <!-- Cabecera del modal -->
+            <div class="modal-pixel-header">
+                <span class="modal-pixel-title" id="modalCrearTitulo">[ NUEVA NOTA ]</span>
+                <button id="btnCerrarModal" class="btn-pixel-close" type="button" aria-label="Cerrar">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Duende escritor -->
+            <div class="duende-escritor-wrap" id="duendeEscritor" aria-hidden="true">
+                <img src="images/duende_escribe.webp" alt="El duende escribe" />
+            </div>
+
+            <!-- Campos -->
+            <div class="modal-pixel-body">
+                <label for="inputTitulo" class="pixel-label">&gt; TITULO:</label>
+                <input
+                    type="text"
+                    id="inputTitulo"
+                    class="campo-pixel-input"
+                    placeholder="Dale un nombre..."
+                    maxlength="80"
+                    autocomplete="off"
+                />
+
+                <label for="inputContenido" class="pixel-label">&gt; CONTENIDO:</label>
+                <textarea
+                    id="inputContenido"
+                    class="campo-pixel-textarea"
+                    placeholder="Escribe aqui tu nota..."
+                    rows="5"
+                ></textarea>
+
+                <div id="feedbackMsg" class="pixel-feedback" role="alert"></div>
+
+                <div class="modal-pixel-footer">
+                    <button id="btnCancelarCrear" class="btn-pixel btn-ghost" type="button">[ CANCELAR ]</button>
+                    <button id="btnGuardar" class="btn-pixel btn-primary" type="button">[ GUARDAR ]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ MODAL: CONFIRMAR ELIMINACIÓN ═════════════════════════ -->
+    <div id="modalEliminar" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitulo" hidden>
+        <div class="modal-pixel-box modal-danger-box">
+            <div class="modal-pixel-header danger-header">
+                <span class="modal-pixel-title" id="modalEliminarTitulo">[ ADVERTENCIA ]</span>
+            </div>
+            <div class="modal-pixel-body" style="text-align:center">
+                <img src="images/duende_tnt.webp" alt="Duende con dinamita" class="modal-tnt-img" />
+                <p class="pixel-warning-text">MECHA ENCENDIDA.</p>
+                <p class="pixel-warning-sub">Esta accion no se puede deshacer.</p>
+                <div class="modal-pixel-footer">
+                    <button id="btnCancelarEliminar" class="btn-pixel btn-ghost" type="button">[ HUIR ]</button>
+                    <button id="btnConfirmarEliminar" class="btn-pixel btn-explode" type="button">[ EXPLOTAR ]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ OVERLAY EXPLOSIÓN ═════════════════════════════════════ -->
+    <div id="overlayExplosion" class="explosion-overlay" hidden aria-hidden="true">
+        <img src="images/explosion.webp" alt="Explosion" class="explosion-img" />
+    </div>
+
+    <!-- ══ SCRIPTS ═══════════════════════════════════════════════ -->
+    <script src="scripts/nota-card.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/notas.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/app.js"></script>
+
+</body>
+</html>

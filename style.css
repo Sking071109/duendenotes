@@ -1,0 +1,777 @@
+/* ============================================================
+   DuendeNotes — style.css  [ PIXEL ART EDITION ]
+   Fuentes: Press Start 2P (títulos) + VT323 (cuerpo)
+   Paleta: oscuro profundo · verde terminal · morado duende
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* ── Variables ──────────────────────────────────────────── */
+:root {
+    /* Fondo y superficies */
+    --bg:           #0b0c10;
+    --surface:      #11121a;
+    --card:         #161822;
+    --card-hover:   #1d1f2e;
+
+    /* Bordes pixel */
+    --border:       #2a2c3e;
+    --border-hi:    #3e4060;
+
+    /* Verde terminal */
+    --green:        #39ff8f;
+    --green-dim:    #27c468;
+    --green-glow:   rgba(57, 255, 143, 0.18);
+    --green-soft:   rgba(57, 255, 143, 0.07);
+
+    /* Morado duende */
+    --purple:       #c084fc;
+    --purple-dim:   #7c3aed;
+    --purple-glow:  rgba(192, 132, 252, 0.18);
+
+    /* Oro favorito */
+    --gold:         #ffd84d;
+    --gold-glow:    rgba(255, 216, 77, 0.2);
+
+    /* Peligro */
+    --danger:       #ff5f5f;
+    --danger-dim:   #c0392b;
+    --danger-glow:  rgba(255, 95, 95, 0.2);
+
+    /* Texto */
+    --text:         #e2e8f0;
+    --text-muted:   #8890aa;
+    --text-dim:     #474a66;
+
+    /* Pixel border width */
+    --px: 3px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Body ───────────────────────────────────────────────── */
+body {
+    background-color: var(--bg);
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(57, 255, 143, 0.012) 3px,
+            rgba(57, 255, 143, 0.012) 4px
+        ),
+        radial-gradient(ellipse 70% 50% at 15% 0%, rgba(57, 255, 143, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(192, 132, 252, 0.06) 0%, transparent 60%);
+    color: var(--text);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ── Scanlines overlay ──────────────────────────────────── */
+.scanlines {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.07) 2px,
+        rgba(0, 0, 0, 0.07) 4px
+    );
+}
+
+/* ── Shell principal ────────────────────────────────────── */
+.app-shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.25rem 6rem;
+    position: relative;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════════════ */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.4rem 0 1rem;
+    border-bottom: var(--px) solid var(--border);
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-logo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    animation: float-px 3s steps(6, end) infinite;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.app-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.85rem, 2.5vw, 1.25rem);
+    color: var(--green);
+    text-shadow: 0 0 14px var(--green), 2px 2px 0 rgba(0,0,0,0.8);
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+}
+
+.app-tagline {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ── Pixel badge (contador) ─────────────────────────────── */
+.pixel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--green-soft);
+    border: var(--px) solid var(--green-dim);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    color: var(--green);
+    image-rendering: pixelated;
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BARRA DE BÚSQUEDA
+══════════════════════════════════════════════════════════ */
+.search-bar-wrap {
+    margin-bottom: 1.4rem;
+}
+
+.search-pixel {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-ico {
+    position: absolute;
+    left: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    pointer-events: none;
+}
+
+.input-pixel {
+    width: 100%;
+    background: var(--surface);
+    border: var(--px) solid var(--border);
+    color: var(--green);
+    font-family: 'VT323', monospace;
+    font-size: 1.25rem;
+    padding: 0.5rem 0.9rem 0.5rem 2.4rem;
+    outline: none;
+    letter-spacing: 0.08em;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-pixel::placeholder {
+    color: var(--text-dim);
+}
+
+.input-pixel:focus {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 0 var(--px) var(--green-glow), inset 0 0 0 1px var(--green-soft);
+}
+
+/* ══════════════════════════════════════════════════════════
+   GRID DE NOTAS
+══════════════════════════════════════════════════════════ */
+.notas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1rem;
+    min-height: 200px;
+}
+
+/* ── Estado vacío ───────────────────────────────────────── */
+.estado-vacio {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.duende-duerme-img {
+    width: 180px;
+    height: auto;
+    animation: float-px 4s steps(4, end) infinite;
+}
+
+.vacio-titulo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+.vacio-sub {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+/* ── Tarjeta de nota ────────────────────────────────────── */
+.nota-card {
+    background: var(--card);
+    border: var(--px) solid var(--border);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    cursor: default;
+    transition: border-color 0.15s, transform 0.1s;
+    animation: cardIn 0.2s steps(4, end) both;
+    position: relative;
+}
+
+/* Pixel corner decorations */
+.nota-card::before,
+.nota-card::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--green-dim);
+}
+.nota-card::before { top: -3px; left: -3px; }
+.nota-card::after  { bottom: -3px; right: -3px; }
+
+.nota-card:hover {
+    border-color: var(--green-dim);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--green-dim);
+}
+
+.nota-card.nota-favorita {
+    border-color: var(--gold);
+    box-shadow: 3px 3px 0 var(--gold);
+}
+.nota-card.nota-favorita::before,
+.nota-card.nota-favorita::after {
+    background: var(--gold);
+}
+
+.nota-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.5rem;
+}
+
+.nota-titulo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.62rem;
+    color: var(--green);
+    line-height: 1.6;
+    word-break: break-word;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+}
+
+.nota-acciones {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+
+.btn-fav,
+.btn-eliminar {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.btn-fav:hover, .btn-fav.activa {
+    background: var(--gold-glow);
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.btn-eliminar:hover {
+    background: var(--danger-glow);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.btn-fav:active,
+.btn-eliminar:active {
+    transform: scale(0.9);
+}
+
+.nota-contenido {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    word-break: break-word;
+    flex: 1;
+    font-family: 'VT323', monospace;
+}
+
+.nota-fecha {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-family: 'VT323', monospace;
+    letter-spacing: 0.05em;
+    border-top: 1px dashed var(--border);
+    padding-top: 0.35rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOTÓN FLOTANTE FAB
+══════════════════════════════════════════════════════════ */
+.fab-pixel {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 58px;
+    height: 58px;
+    background: var(--green-dim);
+    border: var(--px) solid var(--green);
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 4px 4px 0 var(--green);
+}
+
+.fab-pixel:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--green);
+}
+
+.fab-pixel:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--green);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOTONES PIXEL GENERALES
+══════════════════════════════════════════════════════════ */
+.btn-pixel {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    padding: 0.45rem 0.9rem;
+    border: var(--px) solid;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    white-space: nowrap;
+}
+
+.btn-pixel:active {
+    transform: translate(2px, 2px);
+    box-shadow: none !important;
+}
+
+.btn-ghost {
+    background: transparent;
+    border-color: var(--border-hi);
+    color: var(--text-muted);
+}
+.btn-ghost:hover {
+    border-color: var(--purple);
+    color: var(--purple);
+    box-shadow: 2px 2px 0 var(--purple-dim);
+}
+
+.btn-primary {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 3px 3px 0 var(--green);
+}
+.btn-primary:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--green);
+}
+
+.btn-danger-outline {
+    background: transparent;
+    border-color: rgba(255, 95, 95, 0.4);
+    color: var(--danger);
+}
+.btn-danger-outline:hover {
+    border-color: var(--danger);
+    background: var(--danger-glow);
+    box-shadow: 2px 2px 0 var(--danger-dim);
+}
+
+.btn-explode {
+    background: var(--danger-dim);
+    border-color: var(--danger);
+    color: #fff;
+    box-shadow: 3px 3px 0 #8b0000;
+}
+.btn-explode:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #8b0000;
+}
+
+/* ── Botón pixel close (X) ──────────────────────────────── */
+.btn-pixel-close {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: 2px solid var(--border-hi);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.1s, color 0.1s;
+}
+.btn-pixel-close:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODAL BASE
+══════════════════════════════════════════════════════════ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 4, 14, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    padding: 1rem;
+    animation: fadeOverlay 0.15s ease;
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+/* Caja pixel-art (borde doble estilo retro) */
+.modal-pixel-box {
+    background: var(--surface);
+    border: var(--px) solid var(--border-hi);
+    outline: var(--px) solid var(--bg);
+    box-shadow:
+        0 0 0 calc(var(--px) * 2) var(--border),
+        8px 8px 0 rgba(0,0,0,0.6);
+    width: 100%;
+    max-width: 480px;
+    animation: modalIn 0.2s steps(4, end);
+    overflow: hidden;
+}
+
+/* Header del modal (barra de título estilo ventana OS retro) */
+.modal-pixel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient(90deg, var(--green-dim), var(--purple-dim));
+    border-bottom: var(--px) solid var(--border-hi);
+}
+
+.danger-header {
+    background: linear-gradient(90deg, #8b0000, var(--purple-dim));
+}
+
+.modal-pixel-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.58rem;
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+    letter-spacing: 0.08em;
+}
+
+/* Duende escritor dentro del modal */
+.duende-escritor-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 0 0;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
+.duende-escritor-wrap.visible {
+    max-height: 130px;
+    opacity: 1;
+    padding: 0.75rem 0 0;
+}
+
+.duende-escritor-wrap img {
+    height: 110px;
+    width: auto;
+    animation: duende-bob-px 1s steps(3, end) infinite;
+}
+
+/* Body del modal */
+.modal-pixel-body {
+    padding: 1.1rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Campos dentro del modal */
+.pixel-label {
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+}
+
+.campo-pixel-input,
+.campo-pixel-textarea {
+    width: 100%;
+    background: var(--card);
+    border: var(--px) solid var(--border);
+    color: var(--text);
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    padding: 0.5rem 0.75rem;
+    outline: none;
+    letter-spacing: 0.05em;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    resize: none;
+}
+
+.campo-pixel-input:focus,
+.campo-pixel-textarea:focus {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 0 var(--px) var(--green-glow);
+    color: var(--green);
+}
+
+.campo-pixel-input::placeholder,
+.campo-pixel-textarea::placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.modal-pixel-footer {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+}
+
+/* ── Feedback del formulario ────────────────────────────── */
+.pixel-feedback {
+    display: none;
+    padding: 0.4rem 0.75rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    border: 2px solid;
+    animation: fadeInUp 0.2s steps(3, end);
+}
+.pixel-feedback.exito {
+    background: var(--green-soft);
+    border-color: var(--green-dim);
+    color: var(--green);
+}
+.pixel-feedback.error {
+    background: var(--danger-glow);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ── Modal peligro (eliminar) ───────────────────────────── */
+.modal-danger-box {
+    box-shadow:
+        0 0 0 calc(var(--px) * 2) #8b0000,
+        8px 8px 0 rgba(0,0,0,0.6);
+    max-width: 360px;
+}
+
+.modal-tnt-img {
+    width: 110px;
+    height: auto;
+    animation: duende-bob-px 0.8s steps(3, end) infinite;
+    margin: 0 auto 0.75rem;
+    display: block;
+}
+
+.pixel-warning-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    color: var(--danger);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+    margin-bottom: 0.3rem;
+    line-height: 1.8;
+}
+
+.pixel-warning-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   OVERLAY EXPLOSIÓN
+══════════════════════════════════════════════════════════ */
+.explosion-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    animation: fadeOverlay 0.1s steps(2, end);
+}
+
+.explosion-overlay[hidden] { display: none; }
+
+.explosion-img {
+    width: min(400px, 80vw);
+    height: auto;
+    animation: explosionPop 0.25s steps(3, end);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANIMACIONES (pixel-stepped)
+══════════════════════════════════════════════════════════ */
+@keyframes float-px {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-5px); }
+}
+
+@keyframes duende-bob-px {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    50%       { transform: translateY(-4px) scaleX(1.03); }
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.88) translateY(16px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes explosionPop {
+    from { transform: scale(0.4) rotate(-8deg); opacity: 0.4; }
+    to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+}
+
+/* CRT flicker sutil */
+@keyframes crt-flicker {
+    0%, 100% { opacity: 1; }
+    92%       { opacity: 0.97; }
+    94%       { opacity: 0.93; }
+    96%       { opacity: 0.97; }
+}
+
+body { animation: crt-flicker 8s ease-in-out infinite; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 540px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .notas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fab-pixel {
+        bottom: 1.25rem;
+        right: 1.25rem;
+        width: 52px;
+        height: 52px;
+    }
+
+    .modal-pixel-footer {
+        flex-direction: column;
+    }
+
+    .btn-pixel {
+        justify-content: center;
+    }
+}
+
+/* ── Scrollbar pixel ────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+    background: var(--border-hi);
+    border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--purple-dim); }
